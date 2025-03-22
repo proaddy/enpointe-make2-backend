@@ -79,4 +79,14 @@ exports.get_job_by_id = async (jobId) => {
         console.error("Error fetching job by ID: ", error);
         throw error;
     }
+};
+
+exports.delete_job = async (jobId) => {
+    try {
+        const result = await pool.query("DELETE FROM job WHERE id = $1", [jobId]);
+        return result.rows[0];
+    } catch (error) {
+        console.error("Error while deleting job");
+        throw error;
+    }
 }

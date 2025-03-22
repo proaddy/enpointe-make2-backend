@@ -138,6 +138,7 @@ exports.get_job_by_id = async (req, res) => {
         }
         res.status(200).json({
             success: true,
+            message: `Fetching job with id ${id}`,
             job: job
         });
     } catch (error) {
@@ -145,6 +146,34 @@ exports.get_job_by_id = async (req, res) => {
         res.status(500).json({
             success: false,
             message: "Failed to fetch job",
+            error: error.message
+        });
+    }
+};
+
+exports.delete_job = async(req, res) => {
+    try {
+        const id = req.params.id;
+        const existingJob = await jobModel.get_job_by_id(id);
+
+        if(!existingJob) {
+            return res.status(404).json({
+                success: false,
+                message: `No job with id ${id}`
+            });
+        }
+
+        const job = await jobModel.delete_job(id);
+
+        return res.status(200).json({
+            success: true,
+            message: "Job deleted successfully",
+            job: job
+        });
+    } catch (error) {
+        return res.status(500).json({
+            success: false,
+            message: "Failed to delete job",
             error: error.message
         });
     }
