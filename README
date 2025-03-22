@@ -1,0 +1,10 @@
+# Robust backend project
+This project includes schema validation using JOI, Upload CSV/Excel file for importing data in bulk and error handling and request status update for each API endpoint, Export into Excel, Upload image as well.
+
+We can also get data from pagination and filtering.
+
+### Resources/References
+https://stackoverflow.com/questions/41470251/joi-allow-null-values-in-array
+https://www.youtube.com/watch?v=5SFOexX9am8&t=117s&ab_channel=RobertsDevTalk
+https://www.youtube.com/watch?v=_svzevhv4vg&ab_channel=NikitaDev
+https://www.npmjs.com/package/joi
