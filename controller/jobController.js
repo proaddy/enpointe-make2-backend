@@ -1,18 +1,18 @@
-const jobModel = require('../models/jobModel')
-const validate = require("../utils/validate")
+const jobModel = require("../models/jobModel");
+const validate = require("../utils/validate");
 
-exports.create_job = async(req, res) => {
+exports.create_job = async (req, res) => {
     // validating req.body
-    const {error, value} = validate.validateCreateJob(req.body);
+    const { error, value } = validate.validateCreateJob(req.body);
 
-    if(error) {
+    if (error) {
         return res.status(400).json({
             success: false,
             message: "Validation error",
-            errors: error.details.map(detail => ({
+            errors: error.details.map((detail) => ({
                 field: detail.path[0],
-                message: detail.message
-            }))
+                message: detail.message,
+            })),
         });
     }
 
@@ -20,19 +20,19 @@ exports.create_job = async(req, res) => {
         const result = await jobModel.create_job(value);
         res.status(200).json({
             success: true,
-            output: result
-        })
+            output: result,
+        });
     } catch (error) {
         res.status(500).json({
             success: false,
             message: "Failed to create job",
-            error: error.message
-        })
+            error: error.message,
+        });
     }
-}
+};
 
 function paginated_results(data, page_number, items_per_page) {
-    page_number = Math.max(1, page_number) // ensuring page remains atleast 1
+    page_number = Math.max(1, page_number); // ensuring page remains atleast 1
 
     // calculate start and end indices
     const start_index = (page_number - 1) * items_per_page;
@@ -46,82 +46,86 @@ function paginated_results(data, page_number, items_per_page) {
     const total_pages = Math.ceil(total_items / items_per_page);
 
     const metadata = {
-        "current_page": page_number,
-        "items_per_page": items_per_page,
-        "total_items": total_items,
-        "total_pages": total_pages,
-        "has_previous": page_number > 1,
-        "has_next": page_number < total_pages,
-        "previous_page": page_number > 1 ? page_number - 1 : null,
-        "next_page": page_number < total_pages ? page_number + 1 : null
-    }
+        current_page: page_number,
+        items_per_page: items_per_page,
+        total_items: total_items,
+        total_pages: total_pages,
+        has_previous: page_number > 1,
+        has_next: page_number < total_pages,
+        previous_page: page_number > 1 ? page_number - 1 : null,
+        next_page: page_number < total_pages ? page_number + 1 : null,
+    };
 
     return {
-        "data": paginated_data,
-        "meta-data": metadata
-    }
+        data: paginated_data,
+        "meta-data": metadata,
+    };
 }
 
-exports.get_all_jobs = async(req, res) => {
+exports.get_all_jobs = async (req, res) => {
     try {
         const allJobs = await jobModel.get_all_jobs();
 
-        const page_number = parseInt(req.query['page_number']) || 1;
-        const items_per_page = parseInt(req.query['items_per_page']) || 10;
+        const page_number = parseInt(req.query["page_number"]) || 1;
+        const items_per_page = parseInt(req.query["items_per_page"]) || 10;
 
-        const paginated_data = paginated_results(allJobs, page_number, items_per_page);
+        const paginated_data = paginated_results(
+            allJobs,
+            page_number,
+            items_per_page
+        );
 
         res.status(200).json({
             success: true,
             count: allJobs.length,
-            jobs: paginated_data
+            jobs: paginated_data,
         });
     } catch (error) {
         console.error("Controller error:", error);
         res.status(500).json({
             success: false,
             message: "Failed to fetch jobs",
-            error: error.message
+            error: error.message,
         });
     }
 };
 
-exports.update_job = async(req, res) => {
+exports.update_job = async (req, res) => {
     try {
         const id = req.params.id;
 
         const existingJob = await jobModel.get_job_by_id(id);
-        if(!existingJob) {
-            return res.status(404).json({
+        if (!existingJob) {
+            res.status(404).json({
                 success: false,
-                message: `No job found with id ${id}`
+                message: `No job found with id ${id}`,
             });
         }
 
-        const {error, value} = validate.validateUpdateJob(req.body);
-        if(error) {
-            return res.status(400).json({
+        const { error, value } = validate.validateUpdateJob(req.body);
+        if (error) {
+            res.status(400).json({
                 success: false,
                 message: "Validation error",
-                errors: error.details.map(detail => ({
+                errors: error.details.map((detail) => ({
                     field: detail.path[0],
-                    message: detail.message
-                }))
+                    message: detail.message,
+                })),
             });
         }
-        
+
         const updatedJob = await jobModel.update_job(value, id);
         res.status(200).json({
             success: true,
             message: "Job updated successfully",
-            job: updatedJob
-        })
+            job: updatedJob,
+        });
     } catch (error) {
         res.status(500).json({
             success: false,
             message: "Failed to update job",
-            error: error.message
-        })
+            error: error.message,
+        });
     }
 };
 
@@ -130,51 +134,51 @@ exports.get_job_by_id = async (req, res) => {
         const id = req.params.id;
         const job = await jobModel.get_job_by_id(id);
 
-        if(!job) {
-            return res.status(404).json({
+        if (!job) {
+            res.status(404).json({
                 success: false,
-                message: `No job with id ${id} found`
+                message: `No job with id ${id} found`,
             });
         }
         res.status(200).json({
             success: true,
             message: `Fetching job with id ${id}`,
-            job: job
+            job: job,
         });
     } catch (error) {
         console.error("Controller error: ", error);
         res.status(500).json({
             success: false,
             message: "Failed to fetch job",
-            error: error.message
+            error: error.message,
         });
     }
 };
 
-exports.delete_job = async(req, res) => {
+exports.delete_job = async (req, res) => {
     try {
         const id = req.params.id;
         const existingJob = await jobModel.get_job_by_id(id);
 
-        if(!existingJob) {
-            return res.status(404).json({
+        if (!existingJob) {
+            res.status(404).json({
                 success: false,
-                message: `No job with id ${id}`
+                message: `No job with id ${id}`,
             });
         }
 
         const job = await jobModel.delete_job(id);
 
-        return res.status(200).json({
+        res.status(200).json({
             success: true,
             message: "Job deleted successfully",
-            job: job
+            job: job,
         });
     } catch (error) {
-        return res.status(500).json({
+        res.status(500).json({
             success: false,
             message: "Failed to delete job",
-            error: error.message
+            error: error.message,
         });
     }
-}
+};

@@ -1,6 +1,8 @@
-const express = require('express');
-require('dotenv').config()
-const jobroute = require('./routes/jobRoutes')
+const express = require("express");
+require("dotenv").config();
+
+const jobroute = require("./routes/jobRoutes");
+const uploadroute = require("./routes/uploadRoutes");
 
 const app = express();
 app.use(express.json());
@@ -10,12 +12,13 @@ app.use(express.json());
 //     next();
 // });
 
-app.use('/job', jobroute);
+app.use("/job", jobroute);
+app.use("/upload", uploadroute);
 // app.use('/test', (req, res, next) => {
 //     console.log(req.query['number'], typeof(req.query['number']));
 //     next();
 // })
 
-app.listen(process.env.PORT, ()=> {
+app.listen(process.env.PORT, () => {
     console.log(`server is running on http://localhost:${process.env.PORT}`);
 });
