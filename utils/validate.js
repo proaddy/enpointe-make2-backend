@@ -21,7 +21,7 @@ const createJobSchema = Joi.object({
     duration: Joi.string().when("jobType", {
         is: "Full-time", 
         then: Joi.optional().allow(null, ''),
-        otherwise: Joi.string().required() // duration is must if part-time or internship
+        otherwise: Joi.string().pattern(/^(\d+)(-|\s)?(month|months|year|years)$/).required() // Duration should be in format like 6 months or 1 year
     })
 });
 
@@ -46,7 +46,7 @@ const updateJobSchema = Joi.object({
         otherwise: Joi.string().when("jobType", {
             is: Joi.exist(),
             then: Joi.string().required(),
-            otherwise: Joi.string().optional() // duration is must if part-time or internship
+            otherwise: Joi.string().optional()
         }) 
     })
 });
