@@ -3,6 +3,81 @@ This project includes schema validation using JOI, Upload CSV/Excel file for imp
 
 We can also get data from pagination with proper response handling and validation
 
+FEATURES IN THE PROJECT
+-
+- [x]  Create a job (title, description, salary, location, category, etc.)
+- [x]  Read jobs with pagination
+- [x]  Update job details
+- [x]  Delete a job
+- [x]  Implement proper response handling and validation (Joi/Yup)
+- [x]  Upload CSV/Excel file with job data
+    - [x]  Validate and parse the data
+    - [x]  Insert valid jobs in bulk while handling errors
+- [x]  Write a query to group jobs based on the user’s email
+    - [x]  Filter groups where 10 or more users have the same email
+    - [x]  Return a unique list of jobs from those users
+- [ ]  Export job listings to Excel
+- [x]  Upload images API
+
+## Pagination
+on api endpoint of /job/jobs we can give parameters of "page_number" and "items_per_page" in the url if not given it will take the default value of 1 and 10 respectively.
+
+eg. /job/jobs?page_number=1&items_per_page=8
+
+## Basic JOB Routes CRUD Operations
+/job/create-job - post
+
+/job/jobs - get
+
+/job/job/:id - get
+
+/job/update-job/:id - put
+
+/job/delete-job/:id - delete
+
+### File/Image upload and create bulk upload of jobs
+/upload/file - post - we can upload csv file and it will validate what records are valid and then save them in the database
+
+/upload/image - post
+
+### Group queries 
+/group/email - get list of emails which has more than 10 job postings
+
+/group/unique - get unique job posting list
+
+### To run the project
+copy the project and run the command "npm install" this will get all the required packages in the project.
+
+Make a postgresql server and use a single .env file to give the server credentials including
+
+- port on which the express server should run
+- hostname of database
+- port for database
+- database name
+- database user
+- database password
+
+Then use postman to upload the file a test file has been given in the upload folder to see the format
+
+Name the table as 'job' and the structure as
+```SQL
+CREATE TABLE IF NOT EXISTS job (
+    id SERIAL PRIMARY KEY,
+    title VARCHAR(255) NOT NULL,
+    description TEXT NOT NULL,
+    show_salary BOOLEAN NOT NULL,
+    salary_details VARCHAR(255),
+    location VARCHAR(255) NOT NULL,
+    category VARCHAR(255) NOT NULL,
+    email VARCHAR(255) NOT NULL,
+    vacancies INTEGER NOT NULL,
+    company VARCHAR(255) NOT NULL,
+    job_type VARCHAR(50) NOT NULL,
+    duration VARCHAR(100),
+    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+);
+```
+
 ### Resources/References
 https://stackoverflow.com/questions/41470251/joi-allow-null-values-in-array
 https://www.youtube.com/watch?v=5SFOexX9am8&t=117s&ab_channel=RobertsDevTalk
