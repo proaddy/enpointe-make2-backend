@@ -40,8 +40,8 @@ exports.parse_csv = async (req, res) => {
                     success: true,
                     message: "CSV file processed and stored successfully",
                     dataCount: validRecords.length,
-                    data: validRecords,
                     invalidCount: invalidRecords.length,
+                    data: validRecords,
                     invalidRecords: invalidRecords
                 });
             })
