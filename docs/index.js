@@ -1,12 +1,12 @@
 // API Endpoints
 const API_ENDPOINTS = {
-    uploadCSV: "http://localhost:5000/upload/file",
-    createJob: "http://localhost:5000/job/create-job",
-    updateJob: "http://localhost:5000/job/update-job",
-    deleteJob: "http://localhost:5000/job/delete-job",
-    fetchJobs: "http://localhost:5000/job/jobs",
-    groupJobs: "http://localhost:5000/group/email",
-    uniqueJob: "http://localhost:5000/group/unique",
+    uploadCSV: "https://enpointe-make2-backend.onrender.com/upload/file",
+    createJob: "https://enpointe-make2-backend.onrender.com/job/create-job",
+    updateJob: "https://enpointe-make2-backend.onrender.com/job/update-job",
+    deleteJob: "https://enpointe-make2-backend.onrender.com/job/delete-job",
+    fetchJobs: "https://enpointe-make2-backend.onrender.com/job/jobs",
+    groupJobs: "https://enpointe-make2-backend.onrender.com/group/email",
+    uniqueJob: "https://enpointe-make2-backend.onrender.com/group/unique",
 };
 
 let page_number = 1;
@@ -84,7 +84,7 @@ function createJob(event) {
         jobData["showSalary"] = false;
     }
 
-    console.log(jobData);
+    // console.log(jobData);
 
     fetch(API_ENDPOINTS.createJob, {
         method: "POST",
@@ -130,7 +130,7 @@ function updateJob(event) {
     } else {
         jobData["showSalary"] = false;
     }
-    console.log(jobData);
+    // console.log(jobData);
     const { id, ...filteredJobData } = jobData; // only to stop the id property to be sent to the api endpoint
     fetch(`${API_ENDPOINTS.updateJob}/${id}`, {
         method: "PUT",
@@ -159,7 +159,7 @@ function updateJob(event) {
 
 // Fetch Jobs
 function fetchJobs(page = 1, items = 10) {
-    console.log(page, items);
+    // console.log(page, items);
     fetch(
         `${API_ENDPOINTS.fetchJobs}?page_number=${page}&items_per_page=${items}`
     )
@@ -172,7 +172,7 @@ function fetchJobs(page = 1, items = 10) {
         .then((data) => {
             const jobListingsBody = document.getElementById("jobListingsBody");
             jobListingsBody.innerHTML = ""; // Clear existing rows
-            console.log(data);
+            // console.log(data);
 
             if (page > 1) {
                 prevButton.classList.remove("hide");
