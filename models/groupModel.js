@@ -1,4 +1,4 @@
-const pool = require('./db');
+const pool = require("./db");
 
 exports.filter_group = async () => {
     try {
@@ -18,8 +18,15 @@ exports.filter_group = async () => {
 exports.filter_group_unique = async () => {
     try {
         const result = await pool.query(
-            `SELECT DISTINCT ON (email)* FROM job WHERE email IN 
-            (SELECT email AS count FROM job GROUP BY email HAVING COUNT(*)>=10)
+            `WITH EmailGroups AS (
+                SELECT email 
+                FROM job 
+                GROUP BY email 
+                HAVING COUNT(*) >= 10
+            )
+            SELECT DISTINCT title, email
+            FROM job 
+            WHERE email IN (SELECT email FROM EmailGroups) ORDER BY email;
             `
         );
         return result.rows;
@@ -27,4 +34,4 @@ exports.filter_group_unique = async () => {
         console.error("Error while fetching unique data");
         throw error;
     }
-}
+};

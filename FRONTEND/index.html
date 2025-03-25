@@ -1,0 +1,117 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Job Posting Platform</title>
+    <link rel="stylesheet" type="text/css" href="/FRONTEND/style.css">
+</head>
+<body>
+    <div class="container">
+        <div class="csv-upload-section">
+            <input type="file" id="csvFileInput" name="file" accept=".csv">
+            <button id="uploadCsvBtn" class="btn btn-green">Upload CSV</button>
+        </div>
+
+        <div class="job-form-section">
+            <h2>Create Job Posting</h2>
+            <form id="jobPostingForm">
+                <div class="form-grid">
+                    <input type="text" name="title" placeholder="Job Title" required>
+                    <textarea name="description" placeholder="Job Description" required></textarea>
+                    <input type="number" name="salaryDetails" placeholder="Salary" required>
+                    <input type="text" name="location" placeholder="Job Location" required>
+                    <input type="text" name="category" placeholder="Job Category">
+                    <input type="text" name="email" placeholder="Enter Email" >
+                    <input type="number" name="vacancies" placeholder="Number of Vacancies" required>
+                    <input type="text" name="company" placeholder="Company Name" required>
+                    <input type="text" name="duration" placeholder="Job Duration">
+                    <select name="jobType">
+                        <option value="">Select Job Type</option>
+                        <option value="Full-time">Full-Time</option>
+                        <option value="Part-time">Part-Time</option>
+                        <option value="Internship">Internship</option>
+                    </select>
+                </div>
+                <button type="submit" class="btn btn-blue">Create Job</button>
+            </form>
+        </div>
+
+        <div class="update-form-section" id="updateFormSection" style="display: none;">
+            <h2>Update Job Posting</h2>
+            <form id="jobUpdateForm">
+                <div class="form-grid">
+                    <input type="text" name="title" placeholder="Job Title">
+                    <textarea name="description" placeholder="Job Description"></textarea>
+                    <input type="number" name="salaryDetails" placeholder="Salary" step="0.01">
+                    <input type="text" name="location" placeholder="Job Location">
+                    <input type="text" name="category" placeholder="Job Category">
+                    <input type="text" name="email" placeholder="Enter Email">
+                    <input type="number" name="vacancies" placeholder="Number of Vacancies">
+                    <input type="text" name="company" placeholder="Company Name">
+                    <input type="text" name="duration" placeholder="Job Duration">
+                    <select name="jobType">
+                        <option value="">Select Job Type</option>
+                        <option value="Full-time">Full-Time</option>
+                        <option value="Part-time">Part-Time</option>
+                        <option value="Contract">Contract</option>
+                    </select>
+                    <input type="hidden" name="id" id="updateJobId">
+                </div>
+                <button type="submit" class="btn btn-blue">Update Job</button>
+            </form>
+        </div>
+
+        <div class="job-table-section">
+            <h2>Job Listings</h2>
+            <table id="jobListingsTable">
+                <thead>
+                    <tr>
+                        <th>Title</th>
+                        <th>Company</th>
+                        <th>Location</th>
+                        <th>Salary</th>
+                        <th>Actions</th>
+                    </tr>
+                </thead>
+                <tbody id="jobListingsBody">
+                    <!-- Table rows will be dynamically populated -->
+                </tbody>
+            </table>
+            <button id="prev-page" class="btn btn-blue hide">Prev Page</button>
+            <button id="next-page" class="btn btn-blue hide">Next Page</button>
+        </div>
+        <div>
+            <button style="margin-top: 10px;margin-bottom: 10px;" id="groupemail" class="btn btn-blue" name="groupemail">Show Group Email</button>
+            <label for="groupemail">Show the groups of job listings which has more then 10 same emails</label><br>
+            <table id="emailListingTable">
+                <thead>
+                    <tr>
+                        <th>Email</th>
+                        <th>Count</th>
+                    </tr>
+                </thead>
+                <tbody id="emailListingBody">
+                    <!-- Table rows will be dynamically populated -->
+                </tbody>
+            </table>
+            <button style="margin-top: 10px;margin-bottom: 10px;" id="groupunique" class="btn btn-blue" name="groupunique">Show Group Unique Email</button>
+            <label for="groupunique">Show the groups of job listings which has more then 10 same emails</label><br>
+            <table id="uniqueListingTable">
+                <thead>
+                    <tr>
+                        <th>Title</th>
+                        <th>Email</th>
+                    </tr>
+                </thead>
+                <tbody id="uniqueListingBody">
+                    <!-- Table rows will be dynamically populated -->
+                </tbody>
+            </table>
+        </div>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
+    <script src="/FRONTEND/index.js"></script>
+</body>
+</html>
