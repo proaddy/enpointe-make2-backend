@@ -191,7 +191,9 @@ function fetchJobs(page = 1, items = 10) {
                 <td>${job.title || "N/A"}</td>
                 <td>${job.company || "N/A"}</td>
                 <td>${job.location || "N/A"}</td>
+                <td>${job.email || "N/A"}</td>
                 <td>${job.salary_details || "N/A"}</td>
+                <td>${job.vacancies || "N/A"}</td>
                 <td class="action-btns">
                     <button onclick="prepareUpdateForm(${
                         job.id
